@@ -1,6 +1,8 @@
 package com.cydeo.lab08rest.service.impl;
 
 import com.cydeo.lab08rest.dto.DiscountDTO;
+import com.cydeo.lab08rest.entity.Address;
+import com.cydeo.lab08rest.entity.Discount;
 import com.cydeo.lab08rest.mapper.MapperUtil;
 import com.cydeo.lab08rest.repository.DiscountRepository;
 import com.cydeo.lab08rest.service.DiscountService;
@@ -39,7 +41,8 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDTO createDiscount(DiscountDTO discountDTO) {
-        //???
+        Discount createdAddress = mapperUtil.convert(discountDTO, new Discount());
+        discountRepository.save(createdAddress);
         return discountDTO;
     }
 

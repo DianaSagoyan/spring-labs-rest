@@ -1,6 +1,8 @@
 package com.cydeo.lab08rest.service.impl;
 
 import com.cydeo.lab08rest.dto.OrderDTO;
+import com.cydeo.lab08rest.entity.Address;
+import com.cydeo.lab08rest.entity.Order;
 import com.cydeo.lab08rest.enums.PaymentMethod;
 import com.cydeo.lab08rest.mapper.MapperUtil;
 import com.cydeo.lab08rest.repository.OrderRepository;
@@ -45,8 +47,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO save(OrderDTO order) {
-
-        //??
+        Order createdAddress = mapperUtil.convert(order, new Order());
+        orderRepository.save(createdAddress);
         return order;
     }
 }
