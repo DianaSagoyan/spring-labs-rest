@@ -2,7 +2,6 @@ package com.cydeo.lab08rest.service.impl;
 
 import com.cydeo.lab08rest.dto.ProductDTO;
 import com.cydeo.lab08rest.dto.ProductRequest;
-import com.cydeo.lab08rest.entity.Address;
 import com.cydeo.lab08rest.entity.Category;
 import com.cydeo.lab08rest.entity.Product;
 import com.cydeo.lab08rest.mapper.MapperUtil;
@@ -36,16 +35,15 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public ProductDTO save(ProductDTO product) {
-        Product createdAddress = mapperUtil.convert(product, new Product());
-        productRepository.save(createdAddress);
-        return product;
+    public ProductDTO createProduct(ProductDTO product) {
+        Product product1 = productRepository.save(mapperUtil.convert(product, new Product()));
+        return mapperUtil.convert(product1, new ProductDTO());
     }
 
     @Override
     public ProductDTO update(ProductDTO product) {
-        //??
-        return product;
+        Product product1 = productRepository.save(mapperUtil.convert(product, new Product()));
+        return mapperUtil.convert(product1, new ProductDTO());
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.cydeo.lab08rest.service.impl;
 
 import com.cydeo.lab08rest.dto.OrderDTO;
-import com.cydeo.lab08rest.entity.Address;
 import com.cydeo.lab08rest.entity.Order;
 import com.cydeo.lab08rest.enums.PaymentMethod;
 import com.cydeo.lab08rest.mapper.MapperUtil;
@@ -35,18 +34,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> getOrderListByEmail(String email) {
-       return orderRepository.findAllByCustomer_Email(email).stream().map(order -> mapperUtil.convert(order, new OrderDTO())).collect(Collectors.toList());
+        return orderRepository.findAllByCustomer_Email(email).stream().map(order -> mapperUtil.convert(order, new OrderDTO())).collect(Collectors.toList());
     }
 
     @Override
     public OrderDTO update(OrderDTO order) {
-
-        //??
-        return order;
+        Order order1 = orderRepository.save(mapperUtil.convert(order, new Order()));
+        return mapperUtil.convert(order1, new OrderDTO());
     }
 
     @Override
-    public OrderDTO save(OrderDTO order) {
+    public OrderDTO createOrder(OrderDTO order) {
         Order createdAddress = mapperUtil.convert(order, new Order());
         orderRepository.save(createdAddress);
         return order;

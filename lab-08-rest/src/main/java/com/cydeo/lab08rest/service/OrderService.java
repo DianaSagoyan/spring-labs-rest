@@ -10,7 +10,7 @@ public interface OrderService {
     List<OrderDTO> getOrderListByPaymentMethod(PaymentMethod paymentMethod);
     List<OrderDTO> getOrderListByEmail(String email);
     OrderDTO update(OrderDTO order);
-    OrderDTO save(OrderDTO order);
+    OrderDTO createOrder(OrderDTO order);
 
 
 }

@@ -33,7 +33,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ResponseWrapper> createProduct(@RequestBody ProductDTO product){
-        return ResponseEntity.ok(new ResponseWrapper("Product successfully created", productService.save(product), HttpStatus.OK));
+        return ResponseEntity.ok(new ResponseWrapper("Product successfully created", productService.createProduct(product), HttpStatus.OK));
     }
 
     @PutMapping

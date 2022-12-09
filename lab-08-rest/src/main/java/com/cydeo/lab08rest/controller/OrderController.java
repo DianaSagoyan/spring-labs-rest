@@ -35,7 +35,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<ResponseWrapper> createOrder(@RequestBody OrderDTO order){
-        return ResponseEntity.ok(new ResponseWrapper("Order successfully created", orderService.save(order), HttpStatus.OK));
+        return ResponseEntity.ok(new ResponseWrapper("Order successfully created", orderService.createOrder(order), HttpStatus.OK));
     }
 
     @PutMapping
