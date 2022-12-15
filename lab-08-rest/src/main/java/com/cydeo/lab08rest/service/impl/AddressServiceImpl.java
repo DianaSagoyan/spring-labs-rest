@@ -6,7 +6,7 @@ import com.cydeo.lab08rest.entity.Customer;
 import com.cydeo.lab08rest.mapper.MapperUtil;
 import com.cydeo.lab08rest.repository.AddressRepository;
 import com.cydeo.lab08rest.service.AddressService;
-import org.modelmapper.ModelMapper;
+import com.cydeo.lab08rest.service.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +16,12 @@ import java.util.stream.Collectors;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
+    private final CustomerService customerService;
     private final MapperUtil mapperUtil;
 
-    public AddressServiceImpl(AddressRepository addressRepository, MapperUtil mapperUtil) {
+    public AddressServiceImpl(AddressRepository addressRepository, CustomerService customerService, MapperUtil mapperUtil) {
         this.addressRepository = addressRepository;
+        this.customerService = customerService;
         this.mapperUtil = mapperUtil;
     }
 
@@ -44,17 +46,28 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDTO create(AddressDTO address) {
-        Address createdAddress = mapperUtil.convert(address, new Address());
-        addressRepository.save(createdAddress);
-        return address;
+    public AddressDTO create(AddressDTO addressDTO) {
+        Address address = mapperUtil.convert(addressDTO, new Address());
+
+        address.setCustomer(mapperUtil
+                .convert(customerService.findById(addressDTO.getCustomerId()), new Customer()));
+
+        Address savedAddress = addressRepository.save(address);
+
+        return mapperUtil.convert(savedAddress, new AddressDTO());
     }
 
     @Override
     public AddressDTO updateAddress(AddressDTO addressDTO) {
-        Address address = addressRepository.findById(addressDTO.getId());
-        // ???
-        return addressDTO;
+
+        Address address = mapperUtil.convert(addressDTO, new Address());
+
+        address.setCustomer(mapperUtil
+                .convert(customerService.findById(addressDTO.getCustomerId()), new Customer()));
+
+        Address updatedAddress = addressRepository.save(address);
+
+        return mapperUtil.convert(updatedAddress, new AddressDTO());
     }
 
 

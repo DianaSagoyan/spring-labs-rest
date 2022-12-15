@@ -18,22 +18,26 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseWrapper> getCustomerList(){
-        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved all customers", customerService.getCustomerList(), HttpStatus.OK));
-    }
-
-    @GetMapping("{email}")
-    public ResponseEntity<ResponseWrapper> getCustomerListByEmail(@PathVariable("email") String email){
-        return ResponseEntity.ok(new ResponseWrapper("Successfully retrieved customers by email", customerService.getCustomerListByEmail(email), HttpStatus.OK));
-    }
-
-    @PostMapping
-    public ResponseEntity<ResponseWrapper> createCustomer(@RequestBody CustomerDTO customer){
-        return ResponseEntity.ok(new ResponseWrapper("Customer created", customerService.createCustomer(customer), HttpStatus.OK));
+    public ResponseEntity<ResponseWrapper> listAllCustomers() {
+        return ResponseEntity.ok(new ResponseWrapper("Customers are retrieved.",
+                customerService.readAll(), HttpStatus.OK));
     }
 
     @PutMapping
-    public ResponseEntity<ResponseWrapper> updateCustomer(@RequestBody CustomerDTO customer){
-        return ResponseEntity.ok(new ResponseWrapper("Customer updated", customerService.updateCustomer(customer), HttpStatus.OK));
+    public ResponseEntity<ResponseWrapper> updateCustomer(@RequestBody CustomerDTO customerDTO) {
+        return ResponseEntity.ok(new ResponseWrapper("Customer is updated.",
+                customerService.update(customerDTO), HttpStatus.OK));
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponseWrapper> createCustomer(@RequestBody CustomerDTO customerDTO) {
+        return ResponseEntity.ok(new ResponseWrapper("Customer is created.",
+                customerService.create(customerDTO), HttpStatus.OK));
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<ResponseWrapper> getCustomerByEmail(@PathVariable("email") String email) {
+        return ResponseEntity.ok(new ResponseWrapper("Customer is retrieved.",
+                customerService.readByEmail(email), HttpStatus.OK));
     }
 }

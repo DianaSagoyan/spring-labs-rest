@@ -13,33 +13,41 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
     private final MapperUtil mapperUtil;
+    private final CustomerRepository customerRepository;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, MapperUtil mapperUtil) {
-        this.customerRepository = customerRepository;
+    public CustomerServiceImpl(MapperUtil mapperUtil, CustomerRepository customerRepository) {
         this.mapperUtil = mapperUtil;
+        this.customerRepository = customerRepository;
     }
 
     @Override
-    public List<CustomerDTO> getCustomerList() {
-        return customerRepository.findAll().stream().map(customer -> mapperUtil.convert(customer, new CustomerDTO())).collect(Collectors.toList());
+    public CustomerDTO findById(Long customerId) {
+        return customerRepository.findById(customerId).stream()
+                .map(customer -> mapperUtil.convert(customer, new CustomerDTO())).findFirst().orElseThrow();
     }
 
     @Override
-    public CustomerDTO createCustomer(CustomerDTO customer) {
-       customerRepository.save(mapperUtil.convert(customer, new Customer()));
-       return customer;
+    public List<CustomerDTO> readAll() {
+        return customerRepository.findAll().stream()
+                .map(customer -> mapperUtil.convert(customer, new CustomerDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
-        //??
-        return customerDTO;
+    public CustomerDTO update(CustomerDTO customerDTO) {
+        Customer customer = customerRepository.save(mapperUtil.convert(customerDTO, new Customer()));
+        return mapperUtil.convert(customer, new CustomerDTO());
     }
 
     @Override
-    public List<CustomerDTO> getCustomerListByEmail(String email) {
-        return customerRepository.findByEmail(email).stream().map(customer -> mapperUtil.convert(customer, new CustomerDTO())).collect(Collectors.toList());
+    public CustomerDTO create(CustomerDTO customerDTO) {
+        Customer customer = customerRepository.save(mapperUtil.convert(customerDTO, new Customer()));
+        return mapperUtil.convert(customer, new CustomerDTO());
+    }
+
+    @Override
+    public CustomerDTO readByEmail(String email) {
+        return mapperUtil.convert(customerRepository.retrieveByCustomerEmail(email), new CustomerDTO());
     }
 }
